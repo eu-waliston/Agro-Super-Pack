@@ -1,7 +1,7 @@
 import requests
 import os
 from dotenv import load_dotenv
-from datetime import datetime, timezone
+from datetime import datetime
 
 load_dotenv()
 
@@ -23,10 +23,6 @@ def get_weather(lat: float, lon: float):
 
     response.raise_for_status()
     return response.json()
-
-
-from datetime import datetime
-
 
 def format_forecast(weather_data):
     hourly = weather_data.get("hourly", {})
@@ -61,3 +57,27 @@ def format_forecast(weather_data):
         })
 
     return forecast
+
+# def check_alerts(data):
+#     alerts = []
+#
+#     if data["vento_kmh"] > 25:
+#         alerts.append("⚠️ Risco de dano por vento forte")
+#
+#     if data["temperatura_atual"] < 5:
+#         alerts.append("❄️ Risco de geada")
+#
+#     if chuva_proxima_6h > 30:
+#         alerts.append("🌧️ Alerta de chuva intensa")
+#
+#     return alerts
+#
+# def apply_rules(weather, cultura):
+#     rules = db.get_rules(cultura)
+#     score = 100
+#
+#     for rule in rules:
+#         if compare(weather[rule.parametro], rule.operador, rule.valor):
+#             score += rule.impacto_score
+#
+#     return max(0, min(100, score))
