@@ -1,4 +1,4 @@
-let BASE_URL = "http://192.168.11.101:8000";
+let BASE_URL = "http://192.168.11.101:8001";
 
 const cityCoordinates: Record<string, { lat: number; lon: number }> = {
     Sorriso: {lat: -12.54, lon: -55.72},
