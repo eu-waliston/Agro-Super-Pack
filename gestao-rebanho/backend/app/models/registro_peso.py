@@ -1,5 +1,3 @@
-# app/models/registro_peso.py
-
 from sqlalchemy import Column, Float, Date, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship

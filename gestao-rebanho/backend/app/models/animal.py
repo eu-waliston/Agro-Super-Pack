@@ -34,9 +34,14 @@ class Animal(Base):
 
     status = Column(Enum(StatusEnum), default=StatusEnum.ativo)
     
-    # dentro da classe Animal
     registros_peso = relationship(
         "RegistroPeso",
+        back_populates="animal",
+        cascade="all, delete"
+    )
+    
+    aplicacao_vacina = relationship (
+        "AplicacaoVacina",
         back_populates="animal",
         cascade="all, delete"
     )
