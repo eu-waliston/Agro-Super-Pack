@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request
 from app.database import Base, engine
 from app.routes import animal, registro_peso
 from app.routes import vacina, aplicacao_vacina
+from app.routes import alerta
 
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
@@ -15,6 +16,7 @@ app.include_router(animal.router)
 app.include_router(registro_peso.router)
 app.include_router(vacina.router)
 app.include_router(aplicacao_vacina.router)
+app.include_router(alerta.router)
 
 # Templates
 templates = Jinja2Templates(directory="templates")
