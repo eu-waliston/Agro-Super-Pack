@@ -6,3 +6,4 @@ python-dotenv
 pydantic
 Jinja2
 aiofiles
+apscheduler

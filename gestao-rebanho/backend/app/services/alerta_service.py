@@ -1,7 +1,10 @@
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 from app.models.aplicacao_vacina import AplicarVacina
 from app.models.alerta import Alerta
 from app.models.registro_peso import RegistroPeso
+
+from sqlalchemy.orm import Session
+from app.models.vacina import Vacina
 
 def verificar_vacinas(db):
     
@@ -56,3 +59,45 @@ def verificar_peso(db):
                 db.add(alerta)
     db.commit()
     
+def criar_alerta_se_nao_existir(
+    db: Session,
+    animal_id: int,
+    tipo: str,
+    mensagem: str,
+    nivel: str = "MODERADO"
+) :
+    alerta_existente = db.query(Alerta).filter(
+        Alerta.animal_id == animal_id,
+        Alerta.tipo == tipo,
+        Alerta.resolvido == False
+    ).first()
+    
+    if alerta_existente:
+        return
+    
+    novo_alerta = Alerta(
+        animal_id=animal_id,
+        tipo=tipo,
+        mensagem=mensagem,
+        nivel=nivel,
+        craido_em=datetime.utcnow()
+    )
+    
+    db.add(novo_alerta)
+    db.commit()
+
+def processar_alertas(db: Session):
+    hoje = datetime.utcnow().date()    
+    vacinas = db.query(Vacina).all()
+    
+    for vacina in vacinas:
+        if vacina.data_proxima_dose and vacina.data_proxima_dose < hoje:
+            criar_alerta_se_nao_existir(
+                db=db,
+                animal_id=vacina.animal_id,
+                tipo="VACINA_VENCIDA",
+                mensagem="Vacina vencida",
+                nivel="CRITICO"
+            )
+            
+            

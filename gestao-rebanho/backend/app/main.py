@@ -1,14 +1,18 @@
 from fastapi import FastAPI, Request
-from app.database import Base, engine
+from app.database import Base, engine, SessionLocal
 from app.routes import animal, registro_peso
 from app.routes import vacina, aplicacao_vacina
 from app.routes import alerta
+from apscheduler.schedulers.background import BackgroundScheduler
+
+from app.services.alerta_service import processar_alertas
 
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 
 app = FastAPI(title="Gestão de Rebanho API",version="1.0.0")
+
 
 Base.metadata.create_all(bind=engine)
 
@@ -40,4 +44,15 @@ def home(request: Request):
         }
     )
 
+scheduler = BackgroundScheduler()
+
+def job_alertas():
+    db = SessionLocal()
+    try:
+        processar_alertas(db)
+    finally:
+        db.close()
+        
+scheduler.add_job(job_alertas, "interval", hours=24)
+scheduler.start()
 

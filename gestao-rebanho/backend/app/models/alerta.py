@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, DateTime, Boolean, ForeignKey
+from sqlalchemy import Column,Integer, String, DateTime, Boolean, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from app.database import Base
@@ -21,4 +21,18 @@ class Alerta(Base):
     
     animal = relationship("Animal")
     
+
+class Alertas(Base):
+    __tablename__ = "Alertas"
     
+    id = Column(Integer, primary_key=True, index=True)
+    animal_id = Column(Integer, ForeignKey("animal.id"))
+    tipo = Column(String)
+    mensagem = Column(String)
+    nivel = Column(String, default="MODERADO")
+    
+    resolvido = Column(Boolean, default=False)
+    data_resolucao = Column(DateTime, nullable=False)
+    
+    criado_em = Column(DateTime, default=datetime.utcnow)
+
