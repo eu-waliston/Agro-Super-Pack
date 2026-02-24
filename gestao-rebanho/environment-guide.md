@@ -1,7 +1,7 @@
 # ⚡ 1. Criar o ambiente virtual
 
 ```bash
-python -m venv venv
+python [ou python3] -m venv venv
 ```
 
 ## 🔥 2. Ativar o ambiente [🐧Linux]

@@ -23,10 +23,10 @@ class Alerta(Base):
     
 
 class Alertas(Base):
-    __tablename__ = "Alertas"
+    __tablename__ = "alertas"
     
     id = Column(Integer, primary_key=True, index=True)
-    animal_id = Column(Integer, ForeignKey("animal.id"))
+    animal_id = Column(UUID(as_uuid=True), ForeignKey("animais.id", ondelete="CASCADE"), nullable=False)
     tipo = Column(String)
     mensagem = Column(String)
     nivel = Column(String, default="MODERADO")

@@ -7,3 +7,4 @@ pydantic
 Jinja2
 aiofiles
 apscheduler
+alembic
