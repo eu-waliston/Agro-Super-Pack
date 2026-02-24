@@ -28,9 +28,9 @@ def aplicar_vacina(
     if not vacina:
         raise HTTPException(status_code=404, detail="Vacina não encontrada")
 
-    proxima = dados.data_aplicacao + timedelta(days=vacina.intervalo_dias)
+    proxima = dados.data_aplicacao + timedelta(days=vacina.intervalo_dias) # type: ignore
 
-    aplicacao = AplicacaoVacina(
+    aplicacao = AplicarVacina(
         animal_id=animal_id,
         vacina_id=dados.vacina_id,
         data_aplicacao=dados.data_aplicacao,
@@ -47,7 +47,7 @@ def aplicar_vacina(
 @router.get("/{animal_id}/vacinas", response_model=List[AplicacaoResponse])
 def listar_vacinas_animal(animal_id: UUID, db: Session = Depends(get_db)):
     return (
-        db.query(AplicacaoVacina)
-        .filter(AplicacaoVacina.animal_id == animal_id)
+        db.query(AplicarVacina)
+        .filter(AplicarVacina.animal_id == animal_id)
         .all()
     )
